@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: byron-auth-server
+  cloud:
+    config:
+      uri: ${CONFIG_URI}
+      fail-fast: true
+      label: main
+      enabled: false
