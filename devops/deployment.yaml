@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: users-ms
+  name: auth-ms
   labels:
-    app: users-ms
+    app: auth-ms
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: users-ms
+      app: auth-ms
   template:
     metadata:
       labels:
-        app: users-ms
+        app: auth-ms
     spec:
       containers:
-        - name: users-ms
-          image: lordbyron.azurecr.io/users-ms:v1
+        - name: auth-ms
+          image: lordbyron.azurecr.io/auth-ms:v1
           resources:
             requests:
               memory: "128Mi"
@@ -41,20 +41,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: users-ms-service
+  name: auth-ms-service
 spec:
+  type: LoadBalancer
   selector:
-    app: users-ms
+    app: auth-ms
   ports:
     - protocol: TCP
       port: 8080
----
-apiVersion: v1
-kind: Secret
-data:
-  config-uri: aHR0cDovL2NvbmZpZy1zZXJ2ZXItc2VydmljZTo4ODg4
-  config-enabled: dHJ1ZQ==
-metadata:
-  name: byron-secret
-  namespace: default
-type: Opaque
+
