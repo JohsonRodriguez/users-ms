@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-ms
+  labels:
+    app: users-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users-ms
+  template:
+    metadata:
+      labels:
+        app: users-ms
+    spec:
+      containers:
+        - name: users-ms
+          image: lordbyron.azurecr.io/users-ms:v1
+          env:
+            - name: CONFIG_URI
+              valueFrom:
+                secretKeyRef:
+                  name: byron-secret
+                  key: config-uri
+            - name: CONFIG_ENABLED
+              valueFrom:
+                secretKeyRef:
+                  name: byron-secret
+                  key: config-enabled
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-ms-service
+spec:
+  selector:
+    app: users-ms
+  ports:
+    - protocol: TCP
+      port: 8080
+---
+apiVersion: v1
+kind: Secret
+data:
+  config-uri: aHR0cDovL2NvbmZpZy1zZXJ2ZXItc2VydmljZTo4ODg4
+  config-enabled: dHJ1ZQ==
+metadata:
+  name: byron-secret
+  namespace: default
+type: Opaque
