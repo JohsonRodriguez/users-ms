@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.lordbyron.authserver.dto.RoleToUserDto;
+import pe.edu.lordbyron.authserver.dto.UpdatePasswordDto;
 import pe.edu.lordbyron.authserver.exception.UserRepositoryException;
 import pe.edu.lordbyron.authserver.model.Employee;
 import pe.edu.lordbyron.authserver.model.Role;
@@ -63,5 +64,9 @@ public class UserController {
         return userService.changeUserStatus(username, isEnabled);
     }
 
+    @PostMapping("/users/change-password")
+    public ResponseEntity<?> updateUser (@Valid @RequestBody UpdatePasswordDto updatePassword) {
+        return userService.changePassword(updatePassword);
+    }
 
 }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pe.edu.lordbyron.authserver.dto.UpdatePasswordDto;
 import pe.edu.lordbyron.authserver.exception.UserRepositoryException;
 import pe.edu.lordbyron.authserver.model.Role;
 import pe.edu.lordbyron.authserver.model.Employee;
@@ -100,6 +101,20 @@ public class UserServiceImpl implements UserService {
     public List<Employee> getUsers() {
         log.info("Fetching all users");
         return userRepository.findAll();
+    }
+
+    @Override
+    public ResponseEntity<?> changePassword(UpdatePasswordDto updatePassword) {
+        try {
+            var user = userRepository.findByUsername(updatePassword.getUsername());
+            user.setPassword(passwordEncoder.encode(updatePassword.getNewPassword()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw  new UserRepositoryException("Error al actualizar el password del usuario: " + updatePassword.getUsername());
+        }
+        var body = new HashMap<>();
+        body.put("message", "Password actualizado con exito!");
+        return ResponseEntity.ok(body);
     }
 
     @Override
