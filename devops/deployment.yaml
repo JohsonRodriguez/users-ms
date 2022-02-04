@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-ms
+  name: users-ms
   labels:
-    app: auth-ms
+    app: users-ms
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-ms
+      app: users-ms
   template:
     metadata:
       labels:
-        app: auth-ms
+        app: users-ms
     spec:
       containers:
         - name: auth-ms
-          image: lordbyron.azurecr.io/auth-ms:v1
+          image: lordbyron.azurecr.io/users-ms:v1
           resources:
             requests:
               memory: "128Mi"
@@ -41,11 +41,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-ms-service
+  name: users-ms-service
 spec:
   type: LoadBalancer
   selector:
-    app: auth-ms
+    app: users-ms
   ports:
     - protocol: TCP
       port: 8080
